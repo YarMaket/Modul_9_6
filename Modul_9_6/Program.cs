@@ -1,7 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 
-class Program
+/*
+//задание 1
+public class MyCustomException : Exception
+{
+    public MyCustomException(string message) : base(message) { }
+}
+
+class Program1
+{
+    static void Main()
+    {
+        // Массив исключений
+        Exception[] exceptions = new Exception[]
+        {
+            new DivideByZeroException("Деление на ноль"),
+            new NullReferenceException("Ссылка на ноль"),
+            new ArgumentOutOfRangeException("Индекс находится за пределами массива"),
+            new InvalidOperationException("Недопустимая операция"),
+            new MyCustomException("Это мое собственное исключение")
+        };
+
+        // Итерация по массиву исключений
+        foreach (var exception in exceptions)
+        {
+            try
+            {
+                // Принудительно вызываем исключение
+                throw exception;
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine($"Поймано исключение: {e.Message}");
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine($"Поймано исключение: {e.Message}");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine($"Поймано исключение: {e.Message}");
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine($"Поймано исключение: {e.Message}");
+            }
+            catch (MyCustomException e)
+            {
+                Console.WriteLine($"Поймано собственное исключение: {e.Message}");
+            }
+            finally
+            {
+                Console.WriteLine("Блок finally выполнен\n");
+            }
+        }
+    }
+}
+*/
+
+//Задание 2
+
+public class InvalidInputException : Exception
+{
+    public InvalidInputException(string message) : base(message) { }
+}
+
+class Program2
 {
     public delegate void SortingEventHandler(List<string> lastNames);
 
@@ -26,7 +91,17 @@ class Program
                 throw new InvalidInputException("Ошибка: Введено недопустимое число. Пожалуйста, введите 1 или 2.");
             }
 
-            SortList += SortLastNames;
+            // Подписываемся на событие в зависимости от выбора пользователя
+            if (sortOption == 1)
+            {
+                SortList += SortLastNamesAscending;
+            }
+            else if (sortOption == 2)
+            {
+                SortList += SortLastNamesDescending;
+            }
+
+            // Вызываем событие сортировки
             SortList(lastNames);
 
             Console.WriteLine("Отсортированный список фамилий:");
@@ -46,28 +121,14 @@ class Program
         }
     }
 
-    private static void SortLastNames(List<string> lastNames)
+    private static void SortLastNamesAscending(List<string> lastNames)
     {
-        // Сортировка в зависимости от выбранного варианта
-        if (lastNames.Count > 0)
-        {
-            Console.WriteLine("Сортировка начинается...");
-        }
-
-        if (lastNames != null && lastNames.Count > 0)
-        {
-            // Сортировка по возрастанию (А-Я)
-            if (lastNames.Count > 0)
-            {
-                lastNames.Sort();  // Сортировка по возрастанию
-            }
-        }
+        lastNames.Sort(); // Сортировка по возрастанию (А-Я)
     }
 
     private static void SortLastNamesDescending(List<string> lastNames)
     {
-        // Сортировка по убыванию (Я-А)
-        lastNames.Sort((x, y) => y.CompareTo(x)); // Сортировка по убыванию
+        lastNames.Sort((x, y) => y.CompareTo(x)); // Сортировка по убыванию (Я-А)
     }
 
     private static void DisplayLastNames(List<string> lastNames)
